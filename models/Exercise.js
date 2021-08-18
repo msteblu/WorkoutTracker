@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const ExerciseSchema = new Schema({
-  _id: Schema.Types.ObjectId,
   type: String,
   name: String,
   duration: Number,
