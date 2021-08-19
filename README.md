@@ -33,10 +33,10 @@ If you use the application through the deployed [Heroku site](https://fierce-cha
 If the program was cloned, downloaded, and installed instead, get the application running by typing "npm start" into the command-line. All features of the application are then accessible through _localhost_ on your browser or other applications.
 
 _Home: View Recent Workout_
-![Gif of Homepage](https://github.com/msteblu/TechBlog/blob/main/public/assets/Comments.gif)
+![Screenshot of Homepage](public/images/home.png)
 
 _Dashboard: View Stats_
-![Gif of Dashboard](https://github.com/msteblu/TechBlog/blob/main/public/assets/Dashboard.gif)
+![Screenshot of Dashboard](public/images/dashboard.png)
 
 ## Credits
 
