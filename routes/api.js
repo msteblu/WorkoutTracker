@@ -23,12 +23,24 @@ router.post("/api/workouts", ({ body }, res) => {
     });
 });
 
-router.put("/api/workouts/:id", (req, res) => {
+router.put("/api/workouts/:id", async (req, res) => {
+  // console.log(req.body.duration);
+  Workout.findOneAndUpdate(
+    { _id: mongojs.ObjectId(req.params.id) },
+    { $inc: { totalDuration: req.body.duration } },
+    { new: true }
+  )
+    .then((dbWorkout) => {
+      console.log(dbWorkout);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
   Exercise.create(req.body)
     .then(({ _id }) =>
       Workout.findOneAndUpdate(
         { _id: mongojs.ObjectId(req.params.id) },
-        // {},
         { $push: { exercises: _id } },
         { new: true }
       )
@@ -43,7 +55,9 @@ router.put("/api/workouts/:id", (req, res) => {
 
 router.get("/api/workouts/range", (req, res) => {
   Workout.find({})
-    // .populate("exercises")
+    .sort({ day: "desc" })
+    .limit(7)
+    .populate("exercises")
     .exec(function (err, workouts) {
       if (!err) {
         res.json(workouts);
