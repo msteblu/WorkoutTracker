@@ -4,13 +4,15 @@ const Exercise = require("../models/Exercise.js");
 const mongojs = require("mongojs");
 
 router.get("/api/workouts", (req, res) => {
-  Workout.find({}).exec(function (err, workouts) {
-    if (!err) {
-      res.json(workouts);
-    } else {
-      console.log(err);
-    }
-  });
+  Workout.find({})
+    .populate("exercises")
+    .exec(function (err, workouts) {
+      if (!err) {
+        res.json(workouts);
+      } else {
+        console.log(err);
+      }
+    });
 });
 
 router.post("/api/workouts", ({ body }, res) => {
@@ -24,14 +26,13 @@ router.post("/api/workouts", ({ body }, res) => {
 });
 
 router.put("/api/workouts/:id", async (req, res) => {
-  // console.log(req.body.duration);
   Workout.findOneAndUpdate(
     { _id: mongojs.ObjectId(req.params.id) },
     { $inc: { totalDuration: req.body.duration } },
     { new: true }
   )
     .then((dbWorkout) => {
-      console.log(dbWorkout);
+      // console.log(dbWorkout);
     })
     .catch((err) => {
       console.log(err);
@@ -54,17 +55,18 @@ router.put("/api/workouts/:id", async (req, res) => {
 });
 
 router.get("/api/workouts/range", (req, res) => {
-  Workout.find({})
-    .sort({ day: "desc" })
-    .limit(7)
-    .populate("exercises")
-    .exec(function (err, workouts) {
-      if (!err) {
-        res.json(workouts);
-      } else {
-        console.log(err);
-      }
-    });
+  Workout.countDocuments({}, function (err, count) {
+    Workout.find({})
+      .skip(count - 7)
+      .populate("exercises")
+      .exec(function (err, workouts) {
+        if (!err) {
+          res.json(workouts);
+        } else {
+          console.log(err);
+        }
+      });
+  });
 });
 
 module.exports = router;
