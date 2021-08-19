@@ -1,7 +1,11 @@
 const router = require("express").Router();
 
 router.get("/exercise", (req, res) => {
-  res.redirect("exercise.html");
+  if (req.query.id) {
+    res.redirect("exercise.html?id=" + req.query.id);
+  } else {
+    res.redirect("exercise.html");
+  }
 });
 
 router.get("/stats", (req, res) => {
