@@ -57,7 +57,7 @@ router.put("/api/workouts/:id", async (req, res) => {
 router.get("/api/workouts/range", (req, res) => {
   Workout.countDocuments({}, function (err, count) {
     Workout.find({})
-      .skip(count - 7)
+      .skip(count > 7 ? count - 7 : 0)
       .populate("exercises")
       .exec(function (err, workouts) {
         if (!err) {
